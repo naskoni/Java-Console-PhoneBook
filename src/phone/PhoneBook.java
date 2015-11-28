@@ -1,4 +1,4 @@
-package naskoni;
+package phone;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,14 +10,20 @@ import java.util.Set;
 
 public class PhoneBook {	
 	
-	private static Scanner scn = new Scanner(System.in);
-	private static List<PhoneBookEntry> phoneDirectory = new ArrayList<>();
-	private static Set<String> usedNamesAndNumbers = new HashSet<>();
+	private Scanner input;
+	private List<PhoneBookEntry> phoneDirectory;
+	private Set<String> usedNamesAndNumbers;
 	
-	public static void main(String[] args) {				
+	public PhoneBook() {
+		input = new Scanner(System.in);
+		phoneDirectory = new ArrayList<>();
+		usedNamesAndNumbers = new HashSet<>();
+	}
+
+	public void manipulate() {				
 		while (true) {			
 			System.out.print("Please select action (N, R, L, Q): ");
-			String command = scn.nextLine().toUpperCase();
+			String command = input.nextLine().toUpperCase();
 			
 			switch (command) {
 			case "N":
@@ -30,7 +36,7 @@ public class PhoneBook {
 					break;
 				}
 				System.out.print("Record ID: ");
-				int idToRemove = Integer.parseInt(scn.nextLine());
+				int idToRemove = Integer.parseInt(input.nextLine());
 				removeRecord(idToRemove);
 				break;
 			case "L":
@@ -51,7 +57,7 @@ public class PhoneBook {
 		}		
 	}	
 
-	private static void printRecords(String command) {
+	private void printRecords(String command) {
 		System.out.printf("Records (%d):%n", phoneDirectory.size());
 					
 		sortByCommand(command);			
@@ -63,7 +69,7 @@ public class PhoneBook {
 		printSeparatorLine(); 
 	}	
 
-	private static void sortByCommand(String command) {
+	private void sortByCommand(String command) {
 		switch (command) {
 		case "L":
 			Collections.sort(phoneDirectory, new Comparator<PhoneBookEntry>(){
@@ -108,12 +114,13 @@ public class PhoneBook {
 		}		
 	}
 
-	private static void removeRecord(int idToRemove) {		
+	private void removeRecord(int idToRemove) {		
 		if (idToRemove < 1) {
 			System.out.printf("Invalid input [%d], enter positive number!%n", idToRemove);
 			printSeparatorLine();
 			return;
 		}
+		
 		for (int i = 0; i < phoneDirectory.size(); i++) {			
 			if (phoneDirectory.get(i).getId() == idToRemove) {				
 				usedNamesAndNumbers.remove(phoneDirectory.get(i).getName().toUpperCase());
@@ -125,13 +132,14 @@ public class PhoneBook {
 				return;
 			}						
 		}
+		
 		System.out.printf("Òhere is no record with ID %d!%n", idToRemove);
 		printSeparatorLine();
 	}
 
-	private static void createNewRecord() {
+	private void createNewRecord() {
 		System.out.print("Name: ");
-		String name = scn.nextLine().trim();
+		String name = input.nextLine().trim();
 		
 		if (name.isEmpty()) {
 			System.out.println("Error: The field \"name\" cannot be empty!");
@@ -146,7 +154,7 @@ public class PhoneBook {
 		}
 		
 		System.out.print("Phone: ");
-		String phoneNumber = scn.nextLine().trim();
+		String phoneNumber = input.nextLine().trim();
 		
 		if (phoneNumber.isEmpty()) {
 			System.out.println("Error: The field \"phoneNumber\" cannot be empty!");
@@ -168,7 +176,7 @@ public class PhoneBook {
 		printSeparatorLine();
 	}	
 
-	private static void printSeparatorLine() {
+	private void printSeparatorLine() {
 		System.out.println("--------------------");		
 	}
 }

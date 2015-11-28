@@ -1,4 +1,4 @@
-package naskoni;
+package phone;
 
 public class PhoneBookEntry {
 	
